@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<datasources>
+
+  <datasource jndi-name="java:jboss/xa-datasources/TestDS" pool-name="TestDS" 
+        use-java-context="true" use-ccm="true" enabled="true">
+
+    <connection-url>${jdbc.url}</connection-url>
+    <driver>${jdbc.driver:jdbc-driver.jar}</driver>
+    <pool>
+      <min-pool-size>1</min-pool-size>
+      <max-pool-size>20</max-pool-size>
+      <prefill>true</prefill>
+    </pool>
+    <security>
+      <user-name>${jdbc.username:crashrec}</user-name>
+      <password>${jdbc.password:crashrec}</password>
+    </security>
+  </datasource>
+</datasources>
