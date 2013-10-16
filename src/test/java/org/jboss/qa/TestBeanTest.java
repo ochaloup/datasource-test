@@ -14,22 +14,20 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 @RunWith(Arquillian.class)
-public class TestBeanTest
-{
-   @Inject
-   private TestBean testbean;
-   
-   @Deployment
-   public static JavaArchive createDeployment() {
-      return ShrinkWrap.create(JavaArchive.class, "test.jar")
-            .addClass(TestBean.class)
-            .addAsManifestResource("xa-ds.xml")
-            .addAsManifestResource(EmptyAsset.INSTANCE, "beans.xml");
-   }
+public class TestBeanTest {
+  @Inject
+  private TestBean testbean;
 
-   @Test
-   public void testIsDeployed() {
-      Assert.assertNotNull(testbean);
-      testbean.go();
-   }
+  @Deployment
+  public static JavaArchive createDeployment() {
+    return ShrinkWrap.create(JavaArchive.class, "test.jar")
+        .addClass(TestBean.class).addAsManifestResource("xa-ds.xml")
+        .addAsManifestResource(EmptyAsset.INSTANCE, "beans.xml");
+  }
+
+  @Test
+  public void testIsDeployed() {
+    Assert.assertNotNull(testbean);
+    testbean.go();
+  }
 }

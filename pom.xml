@@ -1,37 +1,38 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd" xmlns="http://maven.apache.org/POM/4.0.0"
-    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+<project
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd"
+  xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <modelVersion>4.0.0</modelVersion>
   <groupId>org.jboss.qa</groupId>
   <artifactId>datasources-test</artifactId>
   <version>1.0.0-SNAPSHOT</version>
-  
+
   <properties>
     <version.junit>4.11</version.junit>
     <version.arquillian_core>1.1.1.Final</version.arquillian_core>
     <version.arquillian.container>7.2.0.Final</version.arquillian.container>
     <version.maven.compiler>3.1</version.maven.compiler>
     <version.maven.surefire>2.14.1</version.maven.surefire>
-    
+
     <!-- Where the JBOSS server resides -->
     <jboss.dist>${env.JBOSS_HOME}</jboss.dist>
-    
+
     <!-- What is target jdbc driver jar name which will be used then -->
     <jdbc.driver>jdbc-driver.jar</jdbc.driver>
-    
+
     <!-- Properties to be passed to arquillian -->
     <jdbc.url.property></jdbc.url.property>
     <jdbc.xa.class.property></jdbc.xa.class.property>
     <jdbc.driver.property></jdbc.driver.property>
     <jdbc.username.property></jdbc.username.property>
     <jdbc.password.property></jdbc.password.property>
-    
+
     <!-- JVM properties passed to arquillian to add them as EAP start params -->
     <jvm.properties.debug></jvm.properties.debug>
     <jvm.properties.jdbc></jvm.properties.jdbc>
   </properties>
-  
-  
+
+
   <dependencyManagement>
     <dependencies>
       <dependency>
@@ -74,7 +75,7 @@
       <url>http://repository.jboss.org/nexus/content/groups/public</url>
     </repository>
   </repositories>
-  
+
   <build>
     <finalName>datasources-test</finalName>
     <plugins>
@@ -89,7 +90,7 @@
       </plugin>
     </plugins>
   </build>
-  
+
   <!-- Arquillian activation profile -->
   <profiles>
     <profile>
@@ -110,9 +111,12 @@
                 <arquillian.launch>JBOSS_AS_MANAGED_7.X</arquillian.launch>
                 <!-- which server will be used to run on -->
                 <jboss.dist>${jboss.dist}</jboss.dist>
-                <!-- parameters which will be passed to jboss server at the start -->
-	            <jvm.properties.jdbc>${jdbc.url.property} ${jdbc.xa.class.property} ${jdbc.driver.property} ${jdbc.username.property} ${jdbc.password.property}</jvm.properties.jdbc>
-	            <jvm.properties.debug>${jvm.properties.debug}</jvm.properties.debug>
+                <!-- parameters which will be passed to jboss server at the 
+                  start -->
+                <jvm.properties.jdbc>${jdbc.url.property}
+                  ${jdbc.xa.class.property} ${jdbc.driver.property}
+                  ${jdbc.username.property} ${jdbc.password.property}</jvm.properties.jdbc>
+                <jvm.properties.debug>${jvm.properties.debug}</jvm.properties.debug>
               </systemPropertyVariables>
             </configuration>
           </plugin>
@@ -126,102 +130,114 @@
         </dependency>
       </dependencies>
     </profile>
-    
+
     <!-- Profile to copy JDBC driver from some location to JBOSS_HOME -->
     <profile>
-	    <id>copy.jdbc.driver</id>
-	    <activation>
-	    	<property>
-	    		<name>driver</name>
-	    	</property>
-	    </activation>
-	    <build>
-	        <plugins>
-				<plugin>
-				    <groupId>com.github.goldin</groupId>
-				    <artifactId>copy-maven-plugin</artifactId>
-				    <version>0.2.5</version>
-				    <executions>
-				        <execution>
-				            <id>copy-archive</id>
-				            <phase>process-test-resources</phase>
-				            <goals>
-				                <goal>copy</goal>
-				            </goals>
-				            <configuration>
-				                <resources>
-				                    <resource>
-									    <targetPath>${jboss.dist}/standalone/deployments</targetPath>
-									    <destFileName>${jdbc.driver}</destFileName>
-									    <file>${driver}</file>
-									</resource>
-				                </resources>
-				            </configuration>
-				        </execution>
-				    </executions>
-				</plugin>
-	        </plugins>
-	    </build>
-	</profile>
-    
-    <profile>
-    	<id>debug</id>
-    	<activation>
-    		<property>
-    			<name>debug</name>
-    		</property>
-    	</activation>
-    	<properties>
-    		<jvm.properties.debug>-Xdebug -Xrunjdwp:transport=dt_socket,server=y,suspend=y,address=8787</jvm.properties.debug>
-    	</properties>
+      <id>copy.jdbc.driver</id>
+      <activation>
+        <property>
+          <name>driver</name>
+        </property>
+      </activation>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>com.github.goldin</groupId>
+            <artifactId>copy-maven-plugin</artifactId>
+            <version>0.2.5</version>
+            <executions>
+              <execution>
+                <id>copy-archive</id>
+                <phase>process-test-resources</phase>
+                <goals>
+                  <goal>copy</goal>
+                </goals>
+                <configuration>
+                  <resources>
+                    <resource>
+                      <targetPath>${jboss.dist}/standalone/deployments</targetPath>
+                      <destFileName>${jdbc.driver}</destFileName>
+                      <file>${driver}</file>
+                    </resource>
+                  </resources>
+                </configuration>
+              </execution>
+            </executions>
+          </plugin>
+        </plugins>
+      </build>
     </profile>
-    
-    <!-- Workaround for passing system properties to JBoss AS server via arquillian -->
+
     <profile>
-    	<id>jdbc.url</id>
-   		<activation>
-   			<property><name>jdbc.url</name></property>
-   		</activation>
-   		<properties>
-   			<jdbc.url.property>-Djdbc.url=${jdbc.url}</jdbc.url.property>
-   		</properties>
-   	</profile>
-   	<profile>
-   		<id>jdbc.xa.class</id>
-   		<activation>
-   			<property><name>jdbc.xa.class</name></property>
-   		</activation>
-   		<properties>
-   			<jdbc.xa.class.property>-Djdbc.xa.class=${jdbc.xa.class}</jdbc.xa.class.property>
-   		</properties>
-   	</profile>
-   	<profile>
-   		<id>jdbc.driver</id>
-   		<activation>
-   			<property><name>jdbc.driver</name></property>
-   		</activation>
-   		<properties>
-   			<jdbc.driver.property>-Djdbc.driver=${jdbc.driver}</jdbc.driver.property>
-   		</properties>
-   	</profile>
-   	<profile>
-   		<id>jdbc.username</id>
-   		<activation>
-   			<property><name>jdbc.username</name></property>
-   		</activation>
-   		<properties>
-   			<jdbc.username>-Djdbc.username=${jdbc.username}</jdbc.username>
-   		</properties>
-   	</profile>
-   	<profile>
-   		<id>jdbc.password</id>
-   		<activation>
-   			<property><name>jdbc.password</name></property>
-   		</activation>
-   		<properties>
-   			<jdbc.password>-Djdbc.password=${jdbc.password}</jdbc.password>
-   		</properties>
-   	</profile>
+      <id>debug</id>
+      <activation>
+        <property>
+          <name>debug</name>
+        </property>
+      </activation>
+      <properties>
+        <jvm.properties.debug>-Xdebug
+          -Xrunjdwp:transport=dt_socket,server=y,suspend=y,address=8787</jvm.properties.debug>
+      </properties>
+    </profile>
+
+    <!-- Workaround for passing system properties to JBoss AS server via 
+      arquillian -->
+    <profile>
+      <id>jdbc.url</id>
+      <activation>
+        <property>
+          <name>jdbc.url</name>
+        </property>
+      </activation>
+      <properties>
+        <jdbc.url.property>-Djdbc.url=${jdbc.url}</jdbc.url.property>
+      </properties>
+    </profile>
+    <profile>
+      <id>jdbc.xa.class</id>
+      <activation>
+        <property>
+          <name>jdbc.xa.class</name>
+        </property>
+      </activation>
+      <properties>
+        <jdbc.xa.class.property>-Djdbc.xa.class=${jdbc.xa.class}</jdbc.xa.class.property>
+      </properties>
+    </profile>
+    <profile>
+      <id>jdbc.driver</id>
+      <activation>
+        <property>
+          <name>jdbc.driver</name>
+        </property>
+      </activation>
+      <properties>
+        <jdbc.driver.property>-Djdbc.driver=${jdbc.driver}</jdbc.driver.property>
+      </properties>
+    </profile>
+    <profile>
+      <id>jdbc.username</id>
+      <activation>
+        <property>
+          <name>jdbc.username</name>
+        </property>
+      </activation>
+      <properties>
+        <jdbc.username>-Djdbc.username=${jdbc.username}</jdbc.username>
+      </properties>
+    </profile>
+    <profile>
+      <id>jdbc.password</id>
+      <activation>
+        <property>
+          <name>jdbc.password</name>
+        </property>
+      </activation>
+      <properties>
+        <jdbc.password>-Djdbc.password=${jdbc.password}</jdbc.password>
+      </properties>
+    </profile>
   </profiles>
-  
+
 </project>
