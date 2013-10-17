@@ -131,6 +131,45 @@
       </dependencies>
     </profile>
 
+
+    <!-- Profile to delete all jars from the deployment directory of JBOSS_HOME -->
+    <profile>
+      <id>clean.deployment.directory</id>
+      <activation>
+        <property>
+          <name>delete</name>
+        </property>
+      </activation>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-clean-plugin</artifactId>
+            <executions>
+              <execution>
+                <id>cleanup-jboss-dist-deployments-folder</id>
+                <phase>validate</phase> <!-- this has to be before copy.jdbc.driver and compile -->
+                <goals>
+                  <goal>clean</goal>
+                </goals>
+                <configuration>
+                  <filesets>
+                    <fileset>
+                      <directory>${jboss.dist}/standalone/deployments</directory>
+                      <includes>
+                        <include>*.jar</include>
+                        <include>*.deployed</include>
+                      </includes>
+                    </fileset>
+                  </filesets>
+                </configuration>
+              </execution>
+            </executions>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+
     <!-- Profile to copy JDBC driver from some location to JBOSS_HOME -->
     <profile>
       <id>copy.jdbc.driver</id>
@@ -147,7 +186,7 @@
             <version>0.2.5</version>
             <executions>
               <execution>
-                <id>copy-archive</id>
+                <id>copy-jdbc-driver-archive</id>
                 <phase>process-test-resources</phase>
                 <goals>
                   <goal>copy</goal>

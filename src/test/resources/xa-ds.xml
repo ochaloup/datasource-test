@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <datasources>
-  <xa-datasource jndi-name="java:jboss/xa-datasources/TestDS" pool-name="TestDS" enabled="true">
+  <xa-datasource jndi-name="java:jboss/datasources/TestDS" pool-name="TestDS" enabled="true">
       <xa-datasource-property name="URL">${jdbc.url}</xa-datasource-property>
       <xa-datasource-class>${jdbc.xa.class}</xa-datasource-class>
       <driver>${jdbc.driver:jdbc-driver.jar}</driver>
