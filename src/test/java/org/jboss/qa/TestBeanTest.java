@@ -22,8 +22,8 @@ public class TestBeanTest {
   public static JavaArchive createDeployment() {
     return ShrinkWrap.create(JavaArchive.class, "test.jar")
         .addClass(TestBean.class)
-        // .addAsManifestResource("xa-ds.xml")
-        .addAsManifestResource("normal-ds.xml")
+        .addAsManifestResource("xa-ds.xml")
+        // .addAsManifestResource("normal-ds.xml")
         .addAsManifestResource(EmptyAsset.INSTANCE, "beans.xml");
   }
 

@@ -263,7 +263,7 @@
         </property>
       </activation>
       <properties>
-        <jdbc.username>-Djdbc.username=${jdbc.username}</jdbc.username>
+        <jdbc.username.property>-Djdbc.username=${jdbc.username}</jdbc.username.property>
       </properties>
     </profile>
     <profile>
@@ -274,7 +274,7 @@
         </property>
       </activation>
       <properties>
-        <jdbc.password>-Djdbc.password=${jdbc.password}</jdbc.password>
+        <jdbc.password.property>-Djdbc.password=${jdbc.password}</jdbc.password.property>
       </properties>
     </profile>
   </profiles>

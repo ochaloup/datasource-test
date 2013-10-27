@@ -4,6 +4,7 @@
   <container qualifier="JBOSS_AS_MANAGED_7.X">
     <configuration>
     	<property name="jbossHome">${jboss.dist}</property>
+        <!-- -Dcom.arjuna.ats.arjuna.coordinator.commitOnePhase=false -DCoordinatorEnvironmentBean.commitOnePhase=false -->
   		<property name="javaVmArguments">${jvm.properties.debug:} ${jvm.properties.jdbc:}</property>
     </configuration>
   </container>
