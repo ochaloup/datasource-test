@@ -6,20 +6,25 @@
   <artifactId>datasources-test</artifactId>
   <version>1.0.0-SNAPSHOT</version>
   <properties>
+    <jboss.dist>${env.JBOSS_HOME}</jboss.dist>
+    
     <jdbc.xa.class.property></jdbc.xa.class.property>
-    <version.maven.compiler>3.1</version.maven.compiler>
     <jdbc.username.property></jdbc.username.property>
     <jdbc.url.property></jdbc.url.property>
-    <version.maven.surefire>2.14.1</version.maven.surefire>
-    <version.arquillian.core>1.1.1.Final</version.arquillian.core>
-    <jboss.dist>${env.JBOSS_HOME}</jboss.dist>
-    <jdbc.driver.property></jdbc.driver.property>
-    <version.junit>4.11</version.junit>
+    <jdbc.driver.property></jdbc.driver.property>   
     <jdbc.driver>jdbc-driver.jar</jdbc.driver>
     <jdbc.password.property></jdbc.password.property>
+
     <jvm.properties.debug></jvm.properties.debug>
-    <version.arquillian.container>8.0.0.Beta1</version.arquillian.container>
     <jvm.properties.jdbc></jvm.properties.jdbc>
+    
+    <version.maven.surefire>2.14.1</version.maven.surefire>
+    <version.arquillian.core>1.1.1.Final</version.arquillian.core>
+    <version.junit>4.11</version.junit>
+    <version.arquillian.container>8.0.0.Beta1</version.arquillian.container>
+    <version.maven.compiler>3.1</version.maven.compiler>
+    <version.jboss-ejb-client>2.0.0.Beta5</version.jboss-ejb-client>
+    <version.javax.transaction>1.2</version.javax.transaction>
   </properties>
   
   <dependencyManagement>
@@ -85,14 +90,14 @@
     <dependency>
       <groupId>javax.transaction</groupId>
       <artifactId>javax.transaction-api</artifactId>
-      <version>1.2</version>
+      <version>${version.javax.transaction}</version>
       <scope>test</scope>
     </dependency>
     <!-- Needed for correct run of remote EJB lookups -->
     <dependency>
       <groupId>org.jboss</groupId>
       <artifactId>jboss-ejb-client</artifactId>
-      <version>2.0.0.Beta5</version>
+      <version>${version.jboss-ejb-client}</version>
       <scope>test</scope>
     </dependency>
   </dependencies>
@@ -119,6 +124,8 @@
       </plugin>
     </plugins>
   </build>
+  
+  <!-- Profile to test with arquillian - surefire plugin will run testing -->
   <profiles>
     <profile>
       <id>arq-jboss_as_managed_7.x</id>
@@ -153,6 +160,8 @@
         </dependency>
       </dependencies>
     </profile>
+    
+    <!-- Cleaning deployments directory before driver will be copied inside -->
     <profile>
       <id>clean.deployment.directory</id>
       <activation>
@@ -188,6 +197,8 @@
         </plugins>
       </build>
     </profile>
+    
+    <!-- Copying driver from location defined by -Ddriver to JBOSS_HOME deployments directory -->
     <profile>
       <id>copy.jdbc.driver</id>
       <activation>
@@ -223,6 +234,8 @@
         </plugins>
       </build>
     </profile>
+    
+    <!-- Possible debugging -->
     <profile>
       <id>debug</id>
       <activation>
@@ -235,6 +248,8 @@
           -Xrunjdwp:transport=dt_socket,server=y,suspend=y,address=8787</jvm.properties.debug>
       </properties>
     </profile>
+    
+    <!-- Configuration options which will be passed to test via surefire plugin -->
     <profile>
       <id>jdbc.url</id>
       <activation>
