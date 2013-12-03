@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+  <persistence xmlns="http://java.sun.com/xml/ns/persistence">
+    <persistence-unit name="jbossts-crashrec">
+       <jta-data-source>java:jboss/datasources/TestDS</jta-data-source>
+       <properties>
+           <property name="hibernate.hbm2ddl.auto" value="update"/>
+	       <!-- <property name="hibernate.dialect" value="" /> -->
+           <!-- <property name="hibernate.temp.use_jdbc_metadata_defaults" value="" />  -->
+           <property name="hibernate.show_sql" value="true"/>
+           <property name="hibernate.format_sql" value="true"/>
+           <!-- <property name="hibernate.transaction.flush_before_completion" value="true"/>  -->       
+       </properties>
+   </persistence-unit>
+</persistence>

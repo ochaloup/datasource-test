@@ -14,7 +14,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 @RunWith(Arquillian.class)
-public class TestBeanTest {
+public class SimpleDatasourceTest {
   @Inject
   private TestBean testbean;
 

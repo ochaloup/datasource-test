@@ -1,38 +1,28 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project
-  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd"
-  xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+<project xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd" xmlns="http://maven.apache.org/POM/4.0.0"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <modelVersion>4.0.0</modelVersion>
   <groupId>org.jboss.qa</groupId>
   <artifactId>datasources-test</artifactId>
   <version>1.0.0-SNAPSHOT</version>
-
+  
   <properties>
-    <version.junit>4.11</version.junit>
-    <version.arquillian_core>1.1.1.Final</version.arquillian_core>
-    <version.arquillian.container>7.2.0.Final</version.arquillian.container>
-    <version.maven.compiler>3.1</version.maven.compiler>
-    <version.maven.surefire>2.14.1</version.maven.surefire>
-
-    <!-- Where the JBOSS server resides -->
-    <jboss.dist>${env.JBOSS_HOME}</jboss.dist>
-
-    <!-- What is target jdbc driver jar name which will be used then -->
-    <jdbc.driver>jdbc-driver.jar</jdbc.driver>
-
-    <!-- Properties to be passed to arquillian -->
-    <jdbc.url.property></jdbc.url.property>
     <jdbc.xa.class.property></jdbc.xa.class.property>
-    <jdbc.driver.property></jdbc.driver.property>
+    <version.maven.compiler>3.1</version.maven.compiler>
     <jdbc.username.property></jdbc.username.property>
+    <jdbc.url.property></jdbc.url.property>
+    <version.maven.surefire>2.14.1</version.maven.surefire>
+    <jboss.dist>${env.JBOSS_HOME}</jboss.dist>
+    <jdbc.driver.property></jdbc.driver.property>
+    <version.junit>4.11</version.junit>
+    <jdbc.driver>jdbc-driver.jar</jdbc.driver>
     <jdbc.password.property></jdbc.password.property>
-
-    <!-- JVM properties passed to arquillian to add them as EAP start params -->
+    <version.arquillian.container>7.2.0.Final</version.arquillian.container>
     <jvm.properties.debug></jvm.properties.debug>
+    <version.arquillian_core>1.1.1.Final</version.arquillian_core>
     <jvm.properties.jdbc></jvm.properties.jdbc>
   </properties>
-
-
+  
   <dependencyManagement>
     <dependencies>
       <dependency>
@@ -49,8 +39,15 @@
         <type>pom</type>
         <scope>import</scope>
       </dependency>
+      <dependency>
+        <groupId>org.hibernate</groupId>
+        <artifactId>hibernate-entitymanager</artifactId>
+        <version>4.3.0.CR1</version>
+        <scope>provided</scope>
+      </dependency>
     </dependencies>
   </dependencyManagement>
+  
   <dependencies>
     <dependency>
       <groupId>junit</groupId>
@@ -68,14 +65,26 @@
       <artifactId>jboss-ejb-api_3.1_spec</artifactId>
       <scope>provided</scope>
     </dependency>
+    <dependency>
+      <groupId>org.hibernate.javax.persistence</groupId>
+      <artifactId>hibernate-jpa-2.0-api</artifactId>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>javax.ejb</groupId>
+      <artifactId>ejb-api</artifactId>
+      <version>3.0</version>
+      <scope>provided</scope>
+    </dependency>
   </dependencies>
+  
   <repositories>
     <repository>
       <id>JBOSS_NEXUS</id>
       <url>http://repository.jboss.org/nexus/content/groups/public</url>
     </repository>
   </repositories>
-
+  
   <build>
     <finalName>datasources-test</finalName>
     <plugins>
@@ -86,12 +95,12 @@
           <source>1.6</source>
           <target>1.6</target>
           <encoding>UTF-8</encoding>
+          <proc>none</proc>
         </configuration>
       </plugin>
     </plugins>
   </build>
-
-  <!-- Arquillian activation profile -->
+  
   <profiles>
     <profile>
       <id>arq-jboss_as_managed_7.x</id>
@@ -107,12 +116,8 @@
             <version>${version.maven.surefire}</version>
             <configuration>
               <systemPropertyVariables>
-                <!-- which arquillian 'profile' use -->
                 <arquillian.launch>JBOSS_AS_MANAGED_7.X</arquillian.launch>
-                <!-- which server will be used to run on -->
                 <jboss.dist>${jboss.dist}</jboss.dist>
-                <!-- parameters which will be passed to jboss server at the 
-                  start -->
                 <jvm.properties.jdbc>${jdbc.url.property}
                   ${jdbc.xa.class.property} ${jdbc.driver.property}
                   ${jdbc.username.property} ${jdbc.password.property}</jvm.properties.jdbc>
@@ -130,9 +135,7 @@
         </dependency>
       </dependencies>
     </profile>
-
-
-    <!-- Profile to delete all jars from the deployment directory of JBOSS_HOME -->
+    
     <profile>
       <id>clean.deployment.directory</id>
       <activation>
@@ -143,12 +146,11 @@
       <build>
         <plugins>
           <plugin>
-            <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-clean-plugin</artifactId>
             <executions>
               <execution>
                 <id>cleanup-jboss-dist-deployments-folder</id>
-                <phase>validate</phase> <!-- this has to be before copy.jdbc.driver and compile -->
+                <phase>validate</phase>
                 <goals>
                   <goal>clean</goal>
                 </goals>
@@ -169,8 +171,7 @@
         </plugins>
       </build>
     </profile>
-
-    <!-- Profile to copy JDBC driver from some location to JBOSS_HOME -->
+    
     <profile>
       <id>copy.jdbc.driver</id>
       <activation>
@@ -206,7 +207,7 @@
         </plugins>
       </build>
     </profile>
-
+    
     <profile>
       <id>debug</id>
       <activation>
@@ -219,9 +220,7 @@
           -Xrunjdwp:transport=dt_socket,server=y,suspend=y,address=8787</jvm.properties.debug>
       </properties>
     </profile>
-
-    <!-- Workaround for passing system properties to JBoss AS server via 
-      arquillian -->
+    
     <profile>
       <id>jdbc.url</id>
       <activation>
@@ -278,5 +277,4 @@
       </properties>
     </profile>
   </profiles>
-
 </project>
