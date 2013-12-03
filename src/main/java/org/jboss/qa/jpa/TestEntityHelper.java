@@ -10,7 +10,7 @@ import javax.persistence.PersistenceContext;
  * Helper SLSB for playing (initiate, update, ...) with the test entity.
  */
 @Stateless
-public class TestEntityHelper {
+public class TestEntityHelper implements TestEntityHelperRemote {
 
   @PersistenceContext
   EntityManager em;

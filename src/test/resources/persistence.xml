@@ -4,7 +4,7 @@
        <jta-data-source>java:jboss/datasources/TestDS</jta-data-source>
        <properties>
            <property name="hibernate.hbm2ddl.auto" value="update"/>
-	       <!-- <property name="hibernate.dialect" value="" /> -->
+	       <property name="hibernate.dialect" value="org.hibernate.dialect.Oracle10gDialect" />
            <!-- <property name="hibernate.temp.use_jdbc_metadata_defaults" value="" />  -->
            <property name="hibernate.show_sql" value="true"/>
            <property name="hibernate.format_sql" value="true"/>

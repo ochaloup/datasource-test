@@ -11,7 +11,7 @@ import java.io.Serializable;
  * CREATE TABLE testentity ( id VARCHAR, a INTEGER )
  */
 @Entity
-@Table(name = "testentity")
+@Table(name = "datasourcetestjpa")
 public class TestEntity implements Serializable {
   private static final long serialVersionUID = 1L;
 

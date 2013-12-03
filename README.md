@@ -17,3 +17,8 @@ when you use the xa-ds.xml you need to specify XA class as well<br/>
 <pre>
 mvn test -Djdbc.url=&lt;jdbc-url&gt; -Djdbc.username=&lt;username&gt; -Djdbc.password=&lt;password&gt; -Ddriver=&lt;absolute_path_to_driver_jar&gt; -Djdbc.xa.class=&lt;some_xa_class_implementation&gt;
 </pre>
+
+when you want to run specific test case
+<pre>
+mvn test -Djdbc.url=&lt;jdbc-url&gt; -Djdbc.username=&lt;username&gt; -Djdbc.password=&lt;password&gt; -Ddriver=&lt;absolute_path_to_driver_jar&gt; -Djdbc.xa.class=&lt;some_xa_class_implementation&gt; -Dtest=org.jboss.qa.SimpleJPATest
+</pre>

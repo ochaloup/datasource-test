@@ -2,8 +2,10 @@
 <arquillian xmlns="http://jboss.org/schema/arquillian" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
 			xsi:schemaLocation="http://jboss.org/schema/arquillian http://jboss.org/schema/arquillian/arquillian_1_0.xsd">
   <container qualifier="JBOSS_AS_MANAGED_7.X">
+    <protocol type="jmx-as7" />
     <configuration>
     	<property name="jbossHome">${jboss.dist}</property>
+        <property name="serverConfig">${jboss.server.config.file.name:standalone-full.xml}</property>
         <!-- -Dcom.arjuna.ats.arjuna.coordinator.commitOnePhase=false -DCoordinatorEnvironmentBean.commitOnePhase=false -->
   		<property name="javaVmArguments">${jvm.properties.debug:} ${jvm.properties.jdbc:}</property>
     </configuration>
