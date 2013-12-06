@@ -23,11 +23,15 @@ public class SimpleJPATest {
   
   @EJB
   private TestEntityHelperRemote entityHelper;
+  
+  @EJB
+  private TestEntityBeanProcessorRemote entityBeanProcessor;
 
   @Deployment(name = DEPLOYMENT_NAME)
   public static JavaArchive createDeployment() {
     return ShrinkWrap.create(JavaArchive.class, DEPLOYMENT_NAME + ".jar")
         .addPackage(TestEntity.class.getPackage())
+        .addPackage(TestEntityBeanProcessor.class.getPackage())
         .addAsManifestResource("xa-ds.xml")
         // .addAsManifestResource("normal-ds.xml")
         // .addAsManifestResource(EmptyAsset.INSTANCE, "beans.xml")
@@ -38,8 +42,14 @@ public class SimpleJPATest {
   @Test
   public void testUpdate() {
     Assert.assertNotNull(entityHelper);
-    entityHelper.initTestEntity(DEPLOYMENT_NAME, 1);
+    entityHelper.initTestEntity(DEPLOYMENT_NAME, Integer.MIN_VALUE);
     entityHelper.updateTestEntity(DEPLOYMENT_NAME);
+  }
+  
+  @Test
+  public void testUpdateViaBean() {
+    Assert.assertNotNull(entityBeanProcessor);
+    entityBeanProcessor.doStuffRemote(DEPLOYMENT_NAME);    
   }
   
   @Test
@@ -47,7 +57,15 @@ public class SimpleJPATest {
   public void testUpdateRemote() throws NamingException {
     TestEntityHelperRemote bean = TxUtil.lookup(TestEntityHelperRemote.class, TestEntityHelper.class, DEPLOYMENT_NAME);
     Assert.assertNotNull(bean);
-    bean.initTestEntity(DEPLOYMENT_NAME, 1);
+    bean.initTestEntity(DEPLOYMENT_NAME, Integer.MIN_VALUE);
     bean.updateTestEntity(DEPLOYMENT_NAME);
+  }
+  
+  @Test
+  @RunAsClient
+  public void testUpdateRemoteViaBean() throws NamingException {
+    TestEntityBeanProcessorRemote bean = TxUtil.lookup(TestEntityBeanProcessorRemote.class, TestEntityBeanProcessor.class, DEPLOYMENT_NAME);
+    Assert.assertNotNull(bean);
+    bean.doStuffLocal(DEPLOYMENT_NAME);
   }
 }

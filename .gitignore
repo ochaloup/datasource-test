@@ -5,3 +5,4 @@ target/
 howto.txt
 CosServices.cfg
 a
+*.ignore

@@ -1,5 +1,7 @@
 package org.jboss.qa.jpa;
 
+import javax.ejb.Local;
+import javax.ejb.Remote;
 import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
@@ -10,7 +12,9 @@ import javax.persistence.PersistenceContext;
  * Helper SLSB for playing (initiate, update, ...) with the test entity.
  */
 @Stateless
-public class TestEntityHelper implements TestEntityHelperRemote {
+@Remote(TestEntityHelperRemote.class)
+@Local(TestEntityHelperLocal.class)
+public class TestEntityHelper implements TestEntityHelperRemote, TestEntityHelperLocal {
 
   @PersistenceContext
   EntityManager em;
@@ -28,10 +32,15 @@ public class TestEntityHelper implements TestEntityHelperRemote {
     TestEntity entity = getTestEntity(entityPK);
 
     if (entity == null) {
+      if(initValue != Integer.MIN_VALUE) {
+        initValue = 0;
+      }
       entity = new TestEntity(entityPK, initValue);
       em.persist(entity);
     } else {
-      entity.setA(initValue);
+      if(initValue != Integer.MIN_VALUE) {
+        entity.setA(initValue);
+      }
     }
 
     return entity;
