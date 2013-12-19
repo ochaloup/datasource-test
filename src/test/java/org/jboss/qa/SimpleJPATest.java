@@ -42,7 +42,7 @@ public class SimpleJPATest {
   @Test
   public void testUpdate() {
     Assert.assertNotNull(entityHelper);
-    entityHelper.initTestEntity(DEPLOYMENT_NAME, Integer.MIN_VALUE);
+    entityHelper.initTestEntity(DEPLOYMENT_NAME, 42);
     entityHelper.updateTestEntity(DEPLOYMENT_NAME);
   }
   
@@ -57,7 +57,7 @@ public class SimpleJPATest {
   public void testUpdateRemote() throws NamingException {
     TestEntityHelperRemote bean = TxUtil.lookup(TestEntityHelperRemote.class, TestEntityHelper.class, DEPLOYMENT_NAME);
     Assert.assertNotNull(bean);
-    bean.initTestEntity(DEPLOYMENT_NAME, Integer.MIN_VALUE);
+    bean.initTestEntity(DEPLOYMENT_NAME, 42);
     bean.updateTestEntity(DEPLOYMENT_NAME);
   }
   

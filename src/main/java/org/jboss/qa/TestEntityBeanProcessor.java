@@ -18,13 +18,13 @@ public class TestEntityBeanProcessor implements TestEntityBeanProcessorRemote {
   
   @Override
   public void doStuffRemote(String idKey) {
-    entityHelperRemote.initTestEntity(idKey, Integer.MIN_VALUE);
+    entityHelperRemote.initTestEntity(idKey, 42);
     entityHelperRemote.updateTestEntity(idKey);
   }
   
   @Override
   public void doStuffLocal(String idKey) {
-    entityHelperLocal.initTestEntity(idKey, Integer.MIN_VALUE);
+    entityHelperLocal.initTestEntity(idKey, 42);
     entityHelperLocal.updateTestEntity(idKey);
   }
 }

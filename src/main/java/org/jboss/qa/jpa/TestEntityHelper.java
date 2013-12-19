@@ -32,15 +32,10 @@ public class TestEntityHelper implements TestEntityHelperRemote, TestEntityHelpe
     TestEntity entity = getTestEntity(entityPK);
 
     if (entity == null) {
-      if(initValue != Integer.MIN_VALUE) {
-        initValue = 0;
-      }
       entity = new TestEntity(entityPK, initValue);
       em.persist(entity);
     } else {
-      if(initValue != Integer.MIN_VALUE) {
-        entity.setA(initValue);
-      }
+      entity.setA(initValue);
     }
 
     return entity;
