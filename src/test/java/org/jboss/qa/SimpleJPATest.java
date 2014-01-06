@@ -11,7 +11,6 @@ import org.jboss.qa.jpa.TestEntityHelper;
 import org.jboss.qa.jpa.TestEntityHelperRemote;
 import org.jboss.qa.util.TxUtil;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
-import org.jboss.shrinkwrap.api.asset.StringAsset;
 import org.jboss.shrinkwrap.api.spec.JavaArchive;
 import org.junit.Assert;
 import org.junit.Test;
@@ -35,8 +34,8 @@ public class SimpleJPATest {
         .addAsManifestResource("xa-ds.xml")
         // .addAsManifestResource("normal-ds.xml")
         // .addAsManifestResource(EmptyAsset.INSTANCE, "beans.xml")
-        .addAsManifestResource("persistence.xml")
-        .addAsManifestResource(new StringAsset("Dependencies: org.jboss.jts\n"), "MANIFEST.MF");
+        .addAsManifestResource("persistence.xml"); 
+        // .addAsManifestResource(new StringAsset("Dependencies: org.jboss.jts\n"), "MANIFEST.MF");
   }
 
   @Test

@@ -22,3 +22,14 @@ when you want to run specific test case
 <pre>
 mvn test -Djdbc.url=&lt;jdbc-url&gt; -Djdbc.username=&lt;username&gt; -Djdbc.password=&lt;password&gt; -Ddriver=&lt;absolute_path_to_driver_jar&gt; -Djdbc.xa.class=&lt;some_xa_class_implementation&gt; -Dtest=org.jboss.qa.SimpleJPATest
 </pre>
+
+<p>
+Currently the plugin com.github.goldin:copy-maven-plugin does not work with maven 3.1 and later. Check the bug<br/>
+https://github.com/evgeny-goldin/maven-plugins/issues/10
+<br/><br/>
+Changing maven distro<br/>
+<pre>
+export MAVEN_HOME=...
+export PATH=...
+</pre>
+</p>
